@@ -30,7 +30,16 @@ export const ProductReviewProvider = ({ children }) => {
         }
     }
 
-    return <ProductReviewContext.Provider value={{ review, fetchProductReview, productReviews }}>
+    const getReviewOfProduct = async (productId) => {
+        try {
+            const response = await axios.get(`${api_url}/review/counRateAndRatings/${productId}`)
+            return response.data.review
+        } catch (error) {
+            console.error("Lỗi khi lấy đánh giá sản phẩm!", error);
+        }
+    }
+
+    return <ProductReviewContext.Provider value={{ review, fetchProductReview, productReviews, getReviewOfProduct }}>
         {children}
     </ProductReviewContext.Provider>
 }

@@ -87,8 +87,8 @@ const ManageProducts = () => {
             dataIndex: 'brand',
             key: 'brand',
             filters: [
-                {text: 'JBL', value: 'JBL' },
-                {text: 'boAt', value: 'boAt' },
+                { text: 'JBL', value: 'JBL' },
+                { text: 'boAt', value: 'boAt' },
             ],
             onFilter: (value, record) => record.brand.indexOf(value) === 0
         },
@@ -107,9 +107,9 @@ const ManageProducts = () => {
             dataIndex: 'type',
             key: 'type',
             filters: [
-                {text: 'On Ear', value: 'On Ear' },
-                {text: 'In Ear', value: 'In Ear' },
-                {text: 'Over Ear', value: 'Over Ear' },
+                { text: 'On Ear', value: 'On Ear' },
+                { text: 'In Ear', value: 'In Ear' },
+                { text: 'Over Ear', value: 'Over Ear' },
             ],
             onFilter: (value, record) => record.type.indexOf(value) === 0
         },
@@ -121,6 +121,7 @@ const ManageProducts = () => {
                 compare: (a, b) => a.quantity - b.quantity,
                 multiple: 2,
             },
+            align: 'center'
         },
         {
             title: "Giá",
@@ -132,10 +133,11 @@ const ManageProducts = () => {
             },
             render: (finalPrice) => {
                 return displayMoney(finalPrice)
-            }
+            },
+            align: 'center'
         },
         {
-            title: "Hành động",         
+            title: "Hành động",
             key: 'action',
             render: (text, product) => (
                 <button className="bt bt_danger" onClick={() => handleDelete(product._id)}>Xóa</button>
@@ -145,7 +147,7 @@ const ManageProducts = () => {
         },
     ]
 
-    const onChange = (pagination, filters, sorter) => {     
+    const onChange = (pagination, filters, sorter) => {
         setCurrentPage(pagination.pageSize)
     }
 
@@ -157,21 +159,19 @@ const ManageProducts = () => {
                     <button className="btn" onClick={() => toggleFormCreate(true)}>Thêm sản phẩm</button>
                 </div>
                 <div className="table-wrapper">
-                <Table
-                    columns={columns}
-                    dataSource={allProduct}
-                    onChange={onChange} 
-                    pagination={{
-                        pageSize: currentPage,      
-                        showSizeChanger: true,
-                        pageSizeOptions: [10, 20, 50],
-                    }}
-                    scroll={{
-                        x: 'max-content', // Tự động cuộn ngang nếu cần thiết
-                    }}/>
+                    <Table
+                        columns={columns}
+                        dataSource={allProduct}
+                        onChange={onChange}
+                        pagination={{
+                            pageSize: currentPage,
+                            showSizeChanger: true,
+                            pageSizeOptions: [10, 20, 50],
+                        }}
+                        scroll={{
+                            x: 'max-content', // Tự động cuộn ngang nếu cần thiết
+                        }} />
                 </div>
-
-
             </div>
 
             <FormProduct />

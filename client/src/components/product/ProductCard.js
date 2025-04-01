@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IoMdStar } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { displayMoney } from '../../helpers/utils';
@@ -6,18 +6,28 @@ import useActive from '../../hooks/useActive';
 import { CartContext } from '../../contexts/cart/cartContext';
 import { UserContext } from '../../contexts/user/userContext';
 import { ToastCenter } from '../alert/toast';
+import { ProductReviewContext } from '../../contexts/review/productReview';
 
 
 const ProductCard = (props) => {
 
     const api_url = 'http://localhost:5000'
 
-    const { _id, images, title, info, finalPrice, rateCount} = props;
-
+    const { _id, images, title, info, finalPrice } = props;
     const { addToCart } = useContext(CartContext)
     const { userId } = useContext(UserContext)
+    const { getReviewOfProduct } = useContext(ProductReviewContext)
+    const [countRate, setCountRate] = useState(0)
 
     const { active, handleActive, activeClass } = useActive(false);
+
+    useEffect(() => {
+        const getReview = async () => {
+            const rate = await getReviewOfProduct(_id)
+            setCountRate(rate.countRate)         
+        }
+        getReview()
+    }, [])
 
 
     // handling Add-to-cart
@@ -28,7 +38,7 @@ const ProductCard = (props) => {
                 icon: "info",
                 title: `Vui lòng đăng nhập trước khi đặt hàng`
             })
-        } else {         
+        } else {
             addToCart(userId, productId)
 
             handleActive(_id);
@@ -39,10 +49,9 @@ const ProductCard = (props) => {
         };
     }
 
-
-
     const newPrice = displayMoney(finalPrice);
 
+    
 
     return (
         <>
@@ -52,7 +61,12 @@ const ProductCard = (props) => {
                         <img src={`${api_url}/images/${images[0]}`} alt="product-img" />
                     </Link>
                 </figure>
-                <div className="products_details">                   
+                <div className="products_details">
+                    <span className="rating_star">
+                        {[...Array(countRate || 0)].map((_, i) => (
+                            <IoMdStar key={i} />
+                        ))}
+                    </span>
                     <h3 className="products_title">
                         <Link to={`/product-details/${_id}`}>{title}</Link>
                     </h3>
