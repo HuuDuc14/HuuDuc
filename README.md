@@ -9,6 +9,7 @@ First, you should run the server. Open the terminal (or command prompt) and run 
 ```bash
 cd server
 npm install
+npm run seed
 npm start
 ```
 Next, open another terminal (or command prompt) and run the following command to start the app:
