@@ -120,6 +120,7 @@ const runSeed = async () => {
     await seedProducts();
     await loadData()
     console.log("Seed data completed.");
+    process.exit();
 };
 
 runSeed()
