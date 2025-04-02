@@ -13,7 +13,7 @@ const ProductCard = (props) => {
 
     const api_url = 'http://localhost:5000'
 
-    const { _id, images, title, info, finalPrice } = props;
+    const { _id, images, title, info, finalPrice, quantity } = props;
     const { addToCart } = useContext(CartContext)
     const { userId } = useContext(UserContext)
     const { getReviewOfProduct } = useContext(ProductReviewContext)
@@ -24,7 +24,7 @@ const ProductCard = (props) => {
     useEffect(() => {
         const getReview = async () => {
             const rate = await getReviewOfProduct(_id)
-            setCountRate(rate.countRate)         
+            setCountRate(rate.countRate)
         }
         getReview()
     }, [])
@@ -51,7 +51,7 @@ const ProductCard = (props) => {
 
     const newPrice = displayMoney(finalPrice);
 
-    
+
 
     return (
         <>
@@ -75,13 +75,31 @@ const ProductCard = (props) => {
                     <h2 className="products_price">
                         {newPrice} &nbsp;
                     </h2>
-                    <button
-                        type="button"
-                        className={`btn products_btn ${activeClass(_id)}`}
-                        onClick={() => handleAddItem(_id)}
-                    >
-                        {active ? 'Added' : 'Add to cart'}
-                    </button>
+                    {
+                        quantity > 0 ?
+                            (
+                                <button
+                                    type="button"
+                                    className={`btn products_btn ${activeClass(_id)}`}
+                                    onClick={() => handleAddItem(_id)}
+
+                                >
+                                    {active ? 'Đã thêm' : 'Thêm vào giỏ hàng'}
+                                </button>
+                            ) :
+                            (
+                                <button
+                                    type="button"
+                                    className={`btn products_btn ${activeClass(_id)}`}
+                                    // onClick={() => handleAddItem(_id)}
+                                    disabled
+                                >
+                                    
+                                    Hết hàng
+                                </button>
+                            )
+                    }
+
                 </div>
             </div>
         </>

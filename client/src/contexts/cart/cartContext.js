@@ -1,5 +1,6 @@
 import axios from "axios"
 import { createContext, useEffect, useState } from "react"
+import { Toast } from "../../components/alert/toast"
 
 
 export const CartContext = createContext({})
@@ -24,15 +25,20 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = async (userId, productId) => {
         try {
-            await axios.post(`${api_url}/cart`, {
+            const response = await axios.post(`${api_url}/cart`, {
                 userId,
                 items: [{ productId, quantity: 1 }]
             })
-            // const updateCart = fetchCart(userId)
-            // setCart(updateCart)
             fetchCart(userId);
         } catch (error) {
-            console.error("There was an error add to cart!", error);
+            if (error.response && error.response.status === 400) {
+                Toast.fire({
+                    icon: "info",
+                    title: `${error.response.data.message}`
+                })
+            }else {
+                console.error("There was an error add to cart!", error);
+            }      
         }
     }
 

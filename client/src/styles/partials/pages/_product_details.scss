@@ -113,11 +113,17 @@
         color: var(--text-muted);
     }
 
-    .badge {
+    .badge_instock {
         background-color: green;
         border-radius: 3px;
         padding: 0.5rem 0.7rem;
     }
+
+    .badge_outstock {
+      background-color: rgb(92, 92, 92);
+      border-radius: 3px;
+      padding: 0.5rem 0.7rem;
+  }
 
 }
 

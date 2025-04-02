@@ -1,12 +1,29 @@
 import express from "express"
 import Cart from "../models/cartModel.js"
+import Product from "../models/productModel.js"
 
 
 const addCart = async (req, res) => {
     const { userId, items } = req.body
-
+    
     try {
         let cart = await Cart.findOne({ userId })
+
+
+        for (const { productId, quantity } of items) {
+            const product = await Product.findById(productId);
+            if (!product) {
+                return res.status(404).json({ message: "Sản phẩm không tồn tại" });
+            }
+            
+            const cartItem = cart ? cart.items.find(item => item.productId.toString() === productId.toString()) : null;
+            const newQuantity = cartItem ? cartItem.quantity + quantity : quantity;
+            
+            if (newQuantity > product.quantity) {
+                return res.status(400).json({ message: `Còn ${product.quantity} sản phẩm trong kho` });
+            }
+        }
+
         if (cart) {
             items.forEach(({ productId, quantity }) => {
                 const existingItem = cart.items.find(
@@ -99,13 +116,13 @@ const decrementItem = async (req, res) => {
 const incrementItem = async (req, res) => {
     const { userId, id } = req.params
 
+
+
     try {
         const cart = await Cart.findOne({ userId })
-
         if (!cart) {
             return res.status(404).json({ message: "Giỏ hàng không tồn tại" })
         }
-
         const item = cart.items.find(item => item._id.toString() === id)
 
         if(!item){
@@ -113,6 +130,11 @@ const incrementItem = async (req, res) => {
         }
 
         item.quantity += 1
+        const product = await Product.findById(item.productId);
+        if(item.quantity > product.quantity) {
+            return res.status(400).json({ message: `Còn ${product.quantity} sản phẩm trong kho` });
+        }
+        
 
         await cart.save();
         const updatedCart = await Cart.findOne({ userId }).populate("items.productId");
@@ -120,6 +142,8 @@ const incrementItem = async (req, res) => {
         res.status(200).json(updatedCart);
 
     } catch (error) {
+        console.log(error);
+        
         res.status(500).json({ message: "Lỗi khi tăng số lượng sản phẩm trong giỏ hàng" });
     }
 

@@ -13,7 +13,7 @@ const DetailProduct = () => {
     const api_url = "http://localhost:5000";
     useDocTitle("Product Details");
 
-    const {getProductDetail} = useContext(ProductContext)
+    const { getProductDetail } = useContext(ProductContext)
     const { addToCart } = useContext(CartContext)
     const { userId } = useContext(UserContext)
 
@@ -33,7 +33,7 @@ const DetailProduct = () => {
 
         fetchProduct();
     }, [productId]);
-    
+
 
     const [previewImg, setPreviewImg] = useState(null);
 
@@ -49,26 +49,26 @@ const DetailProduct = () => {
         }
     };
 
-    const [active, setActive] = useState(false) 
+    const [active, setActive] = useState(false)
 
     const handleAddItem = (productId) => {
-    
-            if (!userId) {
-                ToastCenter.fire({
-                    icon: "info",
-                    title: `Vui lòng đăng nhập trước khi đặt hàng`
-                })
-            } else {         
-                addToCart(userId, productId)
-    
-                setActive(true);
-    
-                setTimeout(() => {
-                    setActive(false);
-                }, 3000);
-            };
-        }
-        
+
+        if (!userId) {
+            ToastCenter.fire({
+                icon: "info",
+                title: `Vui lòng đăng nhập trước khi đặt hàng`
+            })
+        } else {
+            addToCart(userId, productId)
+
+            setActive(true);
+
+            setTimeout(() => {
+                setActive(false);
+            }, 3000);
+        };
+    }
+
 
     // Kiểm tra nếu product chưa có dữ liệu, hiển thị loading hoặc thông báo lỗi
     if (!product) {
@@ -130,11 +130,25 @@ const DetailProduct = () => {
                                     <span className="tax_txt">(Đã bao gồm thuế)</span>
                                 </div>
 
-                                <div className="badge">
-                                    <span>
-                                        <IoMdCheckmark /> Còn hàng
-                                    </span>
-                                </div>
+                                {
+                                    product.product.quantity > 0 ?
+                                        (
+                                            <div className="badge_instock badge">
+                                                <span>
+                                                     Còn {product.product.quantity} trong kho
+                                                </span>
+                                            </div>
+                                        ) :
+                                        (
+                                            <div className="badge_outstock badge">
+                                                <span>
+                                                    Đã hết hàng
+                                                </span>
+                                            </div>
+                                        )
+                                }
+
+
                             </div>
 
                             <div className="separator"></div>
@@ -151,8 +165,8 @@ const DetailProduct = () => {
 
                             <div className="prod_details_buy_btn active">
                                 <button type="button" className="btn"
-                                onClick={() => handleAddItem(product.product._id)} style={{backgroundColor: active ? 'green' : ''}}>
-                                    { active ? 'Đã thêm' : 'Thêm vào giỏ hàng'}
+                                    onClick={() => handleAddItem(product.product._id)} style={{ backgroundColor: active ? 'green' : '' }}>
+                                    {active ? 'Đã thêm' : 'Thêm vào giỏ hàng'}
                                 </button>
                             </div>
                         </div>

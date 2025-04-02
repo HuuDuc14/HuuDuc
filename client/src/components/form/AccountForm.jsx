@@ -57,10 +57,6 @@ const AccountForm = () => {
             })
 
             toggleForm(false);
-            // Toast.fire({
-            //     icon: "info",
-            //     title: `${response.data.message}`
-            // })
 
             Swal.fire({
                 text: `${response.data.message}`,

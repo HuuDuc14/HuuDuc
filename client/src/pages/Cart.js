@@ -11,6 +11,7 @@ import { CartContext } from '../contexts/cart/cartContext';
 import { UserContext } from '../contexts/user/userContext';
 import commonContext from '../contexts/common/commonContext';
 import OrderForm from '../components/form/OrderForm';
+import { Toast } from '../components/alert/toast';
 
 
 const Cart = () => {
@@ -36,7 +37,7 @@ const Cart = () => {
             getCart()
         }
     }, [userId])
-    
+
     const cartQuantity = cart.length;
 
     function total() {
@@ -44,12 +45,12 @@ const Cart = () => {
         for (let i = 0; i < cart.length; i++) {
             total += cart[i].quantity *
                 cart[i].productId.finalPrice
-        }          
+        }
         return total
     }
 
     function decrementItem(id) {
-        
+
         axios.post(`${api_url}/cart/decrement/${userId}/${id}`)
             .then((response) => {
                 setCart(response.data.items)
@@ -60,12 +61,23 @@ const Cart = () => {
             });
     }
 
-    function incrementItem(id) {
-        axios.post(`${api_url}/cart/increment/${userId}/${id}`)
-            .then((response) => {
-                setCart(response.data.items)
-                fetchCart(userId)
-            })
+    async function incrementItem(id) {
+        try {
+            await axios.post(`${api_url}/cart/increment/${userId}/${id}`)
+                .then((response) => {
+                    setCart(response.data.items)
+                    fetchCart(userId)
+                })
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                Toast.fire({
+                    icon: "info",
+                    title: `${error.response.data.message}`
+                })
+            } else {
+                console.error("There was an error add to cart!", error);
+            }
+        }
     }
 
     function removeItem(id) {
@@ -88,7 +100,7 @@ const Cart = () => {
         toggleFormOrder(true)
     }
 
-    
+
 
     return (
         <>
@@ -161,7 +173,7 @@ const Cart = () => {
                                 <div className="cart_right_col">
                                     <div className="order_summary">
                                         <h3>
-                                        Tóm tắt đơn hàng &nbsp;
+                                            Tóm tắt đơn hàng &nbsp;
                                             ( {cartQuantity} sản phẩm )
                                         </h3>
                                         <div className="order_summary_details">
@@ -188,7 +200,7 @@ const Cart = () => {
                 </div>
             </section>
 
-            <OrderForm cart={cart} userId={userId} setCart={setCart} total={total()}/>
+            <OrderForm cart={cart} userId={userId} setCart={setCart} total={total()} />
         </>
     );
 };
