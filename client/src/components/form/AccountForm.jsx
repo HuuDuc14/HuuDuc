@@ -5,6 +5,7 @@ import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
 import axios from 'axios';
 import { Toast } from '../alert/toast';
+import Swal from 'sweetalert2';
 
 const AccountForm = () => {
 
@@ -55,12 +56,24 @@ const AccountForm = () => {
                 password
             })
 
-            // setFormUserInfo(response.data.name)
             toggleForm(false);
-            Toast.fire({
+            // Toast.fire({
+            //     icon: "info",
+            //     title: `${response.data.message}`
+            // })
+
+            Swal.fire({
+                text: `${response.data.message}`,
                 icon: "info",
-                title: `${response.data.message}`
-            })
+                confirmButtonColor: "#FF0000",
+                background: "#F0F0F0",
+                color: "#484848",
+                confirmButtonText: "Xác nhận"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    
+                }
+            });
 
         } catch (error) {
             setMessage(error.response?.data?.message || 'Đã có lỗi xảy ra!');
