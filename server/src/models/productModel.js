@@ -26,14 +26,6 @@ const productSchema = new Schema({
     },
     quantity: {
         type: Number
-    },
-    ratings: {
-        type: Number,
-        default: 0
-    },
-    rateCount: {
-        type: Number,
-        default: 5
     }
 }, {
     timestamps: true
