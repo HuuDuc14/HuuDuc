@@ -6,38 +6,16 @@ import commonContext from "../../../contexts/common/commonContext";
 import FormProduct from "../../../components/form/FormProduct";
 import { Toast } from "../../../components/alert/toast";
 import Swal from "sweetalert2";
+import { Table } from 'antd';
 
-import { Button, InputNumber, Table } from 'antd';
-import { displayMoney } from "../../../helpers/utils";
-import { CheckOutlined } from '@ant-design/icons';
+import { InputPriceProduct, InputQuantityProduct } from "../../../components/common/Common";
 
-
-const ProductQuantity = ({ product, handleUpdateQuantityProduct }) => {
-    const [quantity, setQuantity] = useState(product.quantity);
-
-    return (
-        <>
-            <InputNumber
-                size="small"
-                value={quantity}
-                onChange={(value) => setQuantity(value)}
-                style={{ width: "60px" }}
-            />
-            <Button
-                size="small"
-                shape="dashed" icon={<CheckOutlined />}
-                onClick={() => handleUpdateQuantityProduct(quantity, product._id)}
-            >
-            </Button>
-        </>
-    );
-};
 
 const ManageProducts = () => {
     useDocTitle("Quản lý sản phẩm");
 
     const api_url = 'http://localhost:5000'
-    const { products, deleteProduct, updateQuantityProduct } = useContext(ProductContext)
+    const { products, deleteProduct, updateQuantityProduct, updatePriceProduct } = useContext(ProductContext)
     const { toggleFormCreate } = useContext(commonContext);
     const [allProduct, setAllProducts] = useState([])
     const [currentPage, setCurrentPage] = useState(10)
@@ -95,6 +73,10 @@ const ManageProducts = () => {
         updateQuantityProduct(quantity, productId)
     }
 
+    const handleUpdatePriceProduct = (price, producId) => {
+        updatePriceProduct(price, producId)
+    }
+
 
     const columns = [
         {
@@ -144,10 +126,12 @@ const ManageProducts = () => {
             title: "Số lượng",
             key: 'quantity',
             render: (product) => (
-                <ProductQuantity
-                    product={product}
-                    handleUpdateQuantityProduct={handleUpdateQuantityProduct} // Truyền hàm cập nhật số lượng vào component con
-                />
+                <>
+                    <InputQuantityProduct
+                        product={product}
+                        handleUpdateQuantityProduct={handleUpdateQuantityProduct} // Truyền hàm cập nhật số lượng vào component con
+                    />
+                </>
             ),
             sorter: {
                 compare: (a, b) => a.quantity - b.quantity,
@@ -157,15 +141,19 @@ const ManageProducts = () => {
         },
         {
             title: "Giá",
-            dataIndex: 'finalPrice',
             key: 'finalPrice',
             sorter: {
                 compare: (a, b) => a.quantity - b.quantity,
                 multiple: 4,
             },
-            render: (finalPrice) => {
-                return displayMoney(finalPrice)
-            },
+            render: (product) => (
+                <>
+                    <InputPriceProduct
+                        product={product}
+                        handleUpdatePriceProduct={handleUpdatePriceProduct}
+                    />
+                </>
+            ),
             align: 'center'
         },
         {

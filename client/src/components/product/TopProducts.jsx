@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { BsArrowRight } from 'react-icons/bs';
-import ProductCard from './ProductCard';
-import { ProductContext } from '../../contexts/product/productContext';
 import { Skeleton } from 'antd';
+import React, { useContext } from 'react';
+import { BsArrowRight } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
+import { ProductContext } from '../../contexts/product/productContext';
+import ProductCard from './ProductCard';
 
 
 const TopProducts = () => {

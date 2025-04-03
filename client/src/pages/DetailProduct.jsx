@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useDocTitle from "../hooks/useDocTitle";
-import { IoMdCheckmark, IoMdStar } from "react-icons/io";
+import { IoMdStar } from "react-icons/io";
 import { displayMoney } from "../helpers/utils";
 import ProductSummary from "../components/product/ProductSummary";
 import { ProductContext } from "../contexts/product/productContext";
@@ -28,11 +28,11 @@ const DetailProduct = () => {
             } catch (error) {
                 console.error("Error fetching product details:", error);
             }
-        }
+        } 
 
-
+ 
         fetchProduct();
-    }, [productId]);
+    }, [productId, getProductDetail]);
 
 
     const [previewImg, setPreviewImg] = useState(null);

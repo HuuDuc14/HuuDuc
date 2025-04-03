@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import HeroSlider from '../components/sliders/HeroSlider';
 import FeaturedSlider from '../components/sliders/FeaturedSlider';
 import SectionsHead from '../components/common/SectionsHead';
@@ -12,12 +12,12 @@ const Home = () => {
         const queryParams = new URLSearchParams(window.location.search)
         const verifyEmail = queryParams.get('verifyEmail')
 
-        if (verifyEmail && verifyEmail == 'success') {
+        if (verifyEmail && verifyEmail === 'success') {
             Toast.fire({
                 icon: "success",
                 title: `Đăng ký thành công. Hãy đăng nhập`
             })
-        } else if (verifyEmail && verifyEmail == 'error') {
+        } else if (verifyEmail && verifyEmail === 'error') {
             Toast.fire({
                 icon: "error",
                 title: `Lỗi khi xác thực tài khoản`
@@ -29,7 +29,7 @@ const Home = () => {
         <main>
             <section id="hero">
                 <HeroSlider />
-            </section>
+            </section> 
 
             <section id="featured" className="section">
                 <div className="container">

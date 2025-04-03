@@ -98,8 +98,39 @@ export const ProductProvider = ({ children }) => {
         }
     }
 
+    const updatePriceProduct = async (price, productId) => {
 
-    return <ProductContext.Provider value={{ products, getProductDetail, addProduct, deleteProduct, updateListProduct, updateQuantityProduct }}>
+        try {
+            const response = await axios.post(`${api_url}/product/update-price/${productId}`, { price });
+            await updateListProduct()
+            Toast.fire({
+                icon: "success",
+                title: `${response.data.message}`
+            })
+            return response.data.message
+        } catch (error) {
+            if (error.response && error.response.status === 500) {
+                Toast.fire({
+                    icon: "info",
+                    title: `${error.response.data.message}`
+                })
+            } else {
+                console.error("Cập nhật sản phẩm không thành công!", error);
+            }
+        }
+    }
+
+
+    return <ProductContext.Provider
+        value={{
+            products,
+            getProductDetail,
+            addProduct,
+            deleteProduct,
+            updateListProduct,
+            updateQuantityProduct,
+            updatePriceProduct
+        }}>
         {children}
     </ProductContext.Provider >
 }
