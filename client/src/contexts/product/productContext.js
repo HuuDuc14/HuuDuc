@@ -1,5 +1,8 @@
+
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { Toast } from "../../components/alert/toast";
+
 
 
 export const ProductContext = createContext({});
@@ -73,8 +76,30 @@ export const ProductProvider = ({ children }) => {
         }
     }
 
+    const updateQuantityProduct = async (quantity, productId) => {
 
-    return <ProductContext.Provider value={{ products, getProductDetail, addProduct, deleteProduct, updateListProduct }}>
+        try {
+            const response = await axios.post(`${api_url}/product/update-quantity/${productId}`, { quantity });
+            await updateListProduct()
+            Toast.fire({
+                icon: "success",
+                title: `${response.data.message}`
+            })
+            return response.data.message
+        } catch (error) {
+            if (error.response && error.response.status === 500) {
+                Toast.fire({
+                    icon: "info",
+                    title: `${error.response.data.message}`
+                })
+            } else {
+                console.error("Cập nhật sản phẩm không thành công!", error);
+            }
+        }
+    }
+
+
+    return <ProductContext.Provider value={{ products, getProductDetail, addProduct, deleteProduct, updateListProduct, updateQuantityProduct }}>
         {children}
     </ProductContext.Provider >
 }

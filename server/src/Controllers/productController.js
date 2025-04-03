@@ -1,6 +1,7 @@
 import path from 'path';
 import Product from '../models/productModel.js';
 import Review from '../models/ProductReviewModel.js';
+import { assert } from 'console';
 
 const product = async (req, res) => {
     try {
@@ -87,9 +88,29 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const updateQuantity = async (req, res) => {
+    const productId = req.params.productId
+    const {quantity} = req.body
+    try {
+        const product = await Product.findById(productId)
+        product.quantity = quantity
+        product.save()
+
+        res.status(200).json({
+            message: `Đã cập nhật số lượng ${product.title}`
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: `Cập nhật số lượng không thành công`
+        })
+    }
+    
+}
+
 export {
     product,
     detailsProduct,
     createProduct,
-    deleteProduct
+    deleteProduct,
+    updateQuantity
 }

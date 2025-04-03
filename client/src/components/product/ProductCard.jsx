@@ -62,11 +62,22 @@ const ProductCard = (props) => {
                     </Link>
                 </figure>
                 <div className="products_details">
-                    <span className="rating_star">
-                        {[...Array(countRate || 0)].map((_, i) => (
-                            <IoMdStar key={i} />
-                        ))}
-                    </span>
+                    {
+                        countRate ?
+                            (
+                                <span className="rating_star">
+                                    {[...Array(countRate)].map((_, i) => (
+                                        <IoMdStar key={i} />
+                                    ))}
+                                </span>
+                            ) :
+                            (
+                                <span className="rating_star">
+                                    <small>Chưa có đánh giá</small>
+                                </span>
+                            )
+                    }
+
                     <h3 className="products_title">
                         <Link to={`/product-details/${_id}`}>{title}</Link>
                     </h3>
@@ -94,7 +105,7 @@ const ProductCard = (props) => {
                                     // onClick={() => handleAddItem(_id)}
                                     disabled
                                 >
-                                    
+
                                     Hết hàng
                                 </button>
                             )

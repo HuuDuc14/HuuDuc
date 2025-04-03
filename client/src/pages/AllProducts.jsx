@@ -12,7 +12,7 @@ const AllProducts = () => {
     useDocTitle('All Products');
 
     const { allProducts } = useContext(filtersContext);
-    
+
 
     return (
         <>
@@ -26,7 +26,7 @@ const AllProducts = () => {
                                 {
                                     allProducts.map(item => (
                                         <ProductCard
-                                            key={item.id}
+                                            key={item._id}
                                             {...item}
                                         />
                                     ))
