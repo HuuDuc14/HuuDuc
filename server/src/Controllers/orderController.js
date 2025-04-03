@@ -1,15 +1,28 @@
 import express from 'express';
 import Order from '../models/orderModel.js';
+import Product from '../models/productModel.js';
 
 const orderUser = async (req, res) => {
     const userId = req.params.userId
-    const {cart, phone, name, provinceCode, districtCode, wardCode, address, total} = req.body
+    const { cart, phone, name, provinceCode, districtCode, wardCode, address, total } = req.body
 
     if (!userId || !cart || cart.length === 0) {
         return res.status(400).json({ message: "Dữ liệu không hợp lệ" });
     }
 
+
     try {
+        for (let i = 0; i < cart.length; i++) {
+            const product = await Product.findById(cart[i].productId._id)
+            if (product) {
+                product.quantity = product.quantity - cart[i].quantity
+                await product.save()
+            } else {
+                return res.status(200).json({
+                    message: "Lỗi khi đặt hàng"
+                });
+            }
+        }
         const newOrder = new Order({
             userId,
             phone, 
@@ -35,7 +48,7 @@ const orderUser = async (req, res) => {
         res.status(500).json({
             message: "Đã có lỗi xảy ra khi tạo đơn hàng",
             error: error.message,
-          });
+        });
     }
 }
 
@@ -43,7 +56,7 @@ const getOrder = async (req, res) => {
     const userId = req.params.id
 
     try {
-        const orders = await Order.find({userId}).populate('items.productId')
+        const orders = await Order.find({ userId }).populate('items.productId')
         res.status(200).json(orders)
     } catch (error) {
         res.status(500).json({ message: "Lỗi khi lấy đơn hàng" });
@@ -52,9 +65,9 @@ const getOrder = async (req, res) => {
 
 const updateStatus = async (req, res) => {
     const orderId = req.params.orderId
-    const {status} = req.body
+    const { status } = req.body
     try {
-        const order = await Order.updateOne({_id: orderId}, { status })
+        const order = await Order.updateOne({ _id: orderId }, { status })
         res.status(200).json({
             message: "Cập nhật trạng thái thành công",
             order: order
@@ -68,23 +81,23 @@ const updateStatus = async (req, res) => {
 const allOrder = async (req, res) => {
     try {
         const orders = await Order.find({ status: { $ne: "Đã hủy" } })
-        .populate([
-            'items.productId',
-            'provinceData',
-            'districtData',
-            'wardData'
-        ])
+            .populate([
+                'items.productId',
+                'provinceData',
+                'districtData',
+                'wardData'
+            ])
         res.status(200).json(orders)
     } catch (error) {
         console.log(error);
-        
+
         res.status(500).json({ message: "Lỗi khi lấy đơn hàng" });
     }
 }
 
 
 
-export { 
+export {
     orderUser,
     getOrder,
     updateStatus,

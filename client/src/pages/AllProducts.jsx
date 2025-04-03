@@ -12,7 +12,7 @@ const AllProducts = () => {
     useDocTitle('All Products');
 
     const { allProducts } = useContext(filtersContext);
-
+    
 
     return (
         <>

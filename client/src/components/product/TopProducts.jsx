@@ -13,7 +13,7 @@ const TopProducts = () => {
 
     if (products.length === 0) {
         return (
-            <div className="wrapper products_wrapper">
+            <div className="wrapper products_wrapper" style={{cursor: "wait"}}>
                 {
                     [0, 1, 2].map((index) => (
                         <div className="card products_card" key={index}>

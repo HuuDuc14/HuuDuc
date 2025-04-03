@@ -56,7 +56,7 @@ const FeaturedSlider = () => {
                 {
                     [0, 1, 2, 3, 4]?.map((index) => {
                         return (
-                            <SwiperSlide key={index} className="featured_slides">
+                            <SwiperSlide key={index} className="featured_slides" style={{cursor: "wait"}}>
                                 <figure className="featured_img">
                                     <Skeleton.Image active />
                                 </figure>

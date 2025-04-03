@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useEffect, useState  } from "react";
+import { createContext, useEffect, useState } from "react";
 
 
 export const ProductContext = createContext({});
@@ -11,9 +11,9 @@ export const ProductProvider = ({ children }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // await new Promise(resolve => setTimeout(resolve, 5000));
                 const response = await axios.get(`${api_url}/product`);
                 setProducts(response.data);
+
             } catch (error) {
                 console.error("There was an error fetching the data!", error);
             }
@@ -21,6 +21,15 @@ export const ProductProvider = ({ children }) => {
 
         fetchData();
     }, [])
+
+    const updateListProduct = async () => {
+        try {
+            const response = await axios.get(`${api_url}/product`);
+            setProducts(response.data);
+        } catch (error) {
+            console.error("Lấy danh sách sản phẩm không thành công!", error);
+        }
+    }
 
 
     const getProductDetail = async (id) => {
@@ -42,12 +51,12 @@ export const ProductProvider = ({ children }) => {
             });
 
             const newProduct = response.data.product
-            setProducts(prevProducts => [...prevProducts, newProduct])           
+            setProducts(prevProducts => [...prevProducts, newProduct])
             return response.data
 
         } catch (error) {
             console.error('Error adding product:', error);
-            
+
         }
     }
 
@@ -55,17 +64,17 @@ export const ProductProvider = ({ children }) => {
         try {
             const response = await axios.post(`${api_url}/product/delete/${id}`)
             const deleteProduct = response.data.product
-            setProducts((prevProducts) => 
-            prevProducts.filter(product => product._id !== deleteProduct._id))
+            setProducts((prevProducts) =>
+                prevProducts.filter(product => product._id !== deleteProduct._id))
 
             return response.data.message
         } catch (error) {
             console.error('Lỗi khi xóa sản phẩm:', error);
         }
     }
-    
 
-    return <ProductContext.Provider value={{products, getProductDetail, addProduct, deleteProduct}}>
+
+    return <ProductContext.Provider value={{ products, getProductDetail, addProduct, deleteProduct, updateListProduct }}>
         {children}
     </ProductContext.Provider >
 }

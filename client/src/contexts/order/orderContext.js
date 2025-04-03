@@ -1,9 +1,11 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { ProductContext } from "../product/productContext";
 
 export const OrderContext = createContext({})
 
 export const OrderProvider = ({children}) => {
+    const {updateListProduct} = useContext(ProductContext)
     const api_url = 'http://localhost:5000'
 
     const fetchOrder = async (userId) => {
@@ -18,6 +20,7 @@ export const OrderProvider = ({children}) => {
     const order = async (userId, orderData) => {
         try {
             const response = await axios.post(`${api_url}/order/${userId}`, orderData)
+            await updateListProduct()
             return response.data
         } catch (error) {
             console.error("Lỗi khi đặt hàng", error);

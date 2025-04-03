@@ -90,7 +90,7 @@ const ProductCard = (props) => {
                             (
                                 <button
                                     type="button"
-                                    className={`btn products_btn ${activeClass(_id)}`}
+                                    className={`btn products_btn_outstock ${activeClass(_id)}`}
                                     // onClick={() => handleAddItem(_id)}
                                     disabled
                                 >

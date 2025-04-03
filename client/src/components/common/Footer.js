@@ -72,7 +72,7 @@ const Footer = () => {
                     <div className="sub_footer_wrapper">
                         <div className="foot_copyright">
                             <p>
-                                {currYear} | XBeat. All Rights Reserved | <a href="">Nguyen Huu Duc</a>
+                                {currYear} | HuuDuc. All Rights Reserved | <a href="">Nguyen Huu Duc</a>
                             </p>
                         </div>
                         <div className="foot_social">

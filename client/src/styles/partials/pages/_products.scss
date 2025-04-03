@@ -77,6 +77,16 @@
     }
 }
 
+.products_btn_outstock {
+    width: 100%;
+    margin-top: 1.2rem;
+    background-color: #707070;
+
+    &[disabled] {
+        cursor: default;
+    }
+}
+
 
 /*------ All-Products Page ------*/
 #all_products {
