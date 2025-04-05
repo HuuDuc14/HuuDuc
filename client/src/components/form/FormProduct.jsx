@@ -3,10 +3,13 @@ import commonContext from "../../contexts/common/commonContext";
 import useOutsideClose from "../../hooks/useOutsideClose";
 import { ProductContext } from "../../contexts/product/productContext";
 import { Toast } from "../alert/toast";
+import { BrandContext } from "../../contexts/common/brandContext";
 
 const FormProduct = () => {
     const { isFormCreate, toggleFormCreate } = useContext(commonContext);
     const { addProduct } = useContext(ProductContext)
+    const { brands } = useContext(BrandContext);
+    
 
     const [brand, setBrand] = useState("");
     const [category, setCategory] = useState("");
@@ -106,12 +109,24 @@ const FormProduct = () => {
                                 <div className="row">
                                     <div className="col-4">
                                         <div className="input_box">
-                                            <input
+                                            {/* <input
                                                 type="text"
                                                 className="input_field"
                                                 value={brand}
                                                 onChange={(e) => setBrand(e.target.value)}
-                                            />
+                                            /> */}
+                                             <select
+                                                className="input_field"
+                                                value={brand}
+                                                onChange={(e) => setBrand(e.target.value)}
+                                            >
+                                                <option>-- Chọn thương hiệu --</option>
+                                                {
+                                                    brands && brands.map((brand) => (
+                                                        <option value={brand.name}>{brand.name}</option>
+                                                    ))
+                                                }
+                                            </select>
                                             <label className="input_label">Hãng</label>
                                         </div>
                                     </div>

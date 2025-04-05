@@ -1,14 +1,15 @@
-
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { Toast } from "../../components/alert/toast";
 
 
 
+
 export const ProductContext = createContext({});
 
 export const ProductProvider = ({ children }) => {
-    const api_url = 'http://localhost:5000'
+    
+    const api_url = process.env.REACT_APP_API_URL_BACKEND
     const [products, setProducts] = useState([])
 
     useEffect(() => {
@@ -89,7 +90,7 @@ export const ProductProvider = ({ children }) => {
         } catch (error) {
             if (error.response && error.response.status === 500) {
                 Toast.fire({
-                    icon: "info",
+                    icon: "error",
                     title: `${error.response.data.message}`
                 })
             } else {

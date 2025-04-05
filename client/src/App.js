@@ -9,6 +9,7 @@ import { UserProvider } from './contexts/user/userContext';
 import { OrderProvider } from './contexts/order/orderContext';
 import { AddressProvider } from './contexts/address/addressContext';
 import { ProductReviewProvider } from './contexts/review/productReview';
+import { BrandProvider } from './contexts/common/brandContext';
 
 const App = () => {
 
@@ -18,16 +19,18 @@ const App = () => {
         <ProductProvider>
           <CartProvider>
             <AddressProvider>
-              <OrderProvider>
-                <ProductReviewProvider>
-                  <FiltersProvider>                 
+              <BrandProvider>
+                <OrderProvider>
+                  <ProductReviewProvider>
+                    <FiltersProvider>
                       <Header />
                       <RouterRoutes />
                       <Footer />
                       <BackTop />
-                  </FiltersProvider>
-                </ProductReviewProvider>
-              </OrderProvider>
+                    </FiltersProvider>
+                  </ProductReviewProvider>
+                </OrderProvider>
+              </BrandProvider>
             </AddressProvider>
           </CartProvider>
         </ProductProvider>

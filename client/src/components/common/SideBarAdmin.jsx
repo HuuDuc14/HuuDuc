@@ -1,6 +1,6 @@
 import { FaChartBar } from "react-icons/fa"
 import { FiInbox } from "react-icons/fi"
-import { IoHeadset } from "react-icons/io5"
+import { IoHeadset, IoSettingsOutline } from "react-icons/io5"
 import { NavLink } from "react-router-dom"
 
 const SideBarAdmin = () => {
@@ -15,7 +15,14 @@ const SideBarAdmin = () => {
                     <span>Thống kê</span>
                 </span>
             </NavLink>
-
+            <NavLink to="/admin/common" className={({ isActive }) => isActive ? "button-sidebar active" : "button-sidebar"}>
+                <span>
+                    <div className="icon">
+                        <IoSettingsOutline />
+                    </div>
+                    <span>Chung</span>
+                </span>
+            </NavLink>
             <NavLink to="/admin/product" className={({ isActive }) => isActive ? "button-sidebar active" : "button-sidebar"}>
                 <span>
                     <div className="icon">

@@ -11,6 +11,7 @@ import AdminRoute from './AdminRoute';
 import ManageProducts from '../pages/admin/manage/ManageProduct';
 import ManageOrder from '../pages/admin/manage/ManageOrder';
 import AdminLayout from '../layout/AdminLayout';
+import ManageCommon from '../pages/admin/manage/ManageCommon';
 
 const RouterRoutes = () => {
 
@@ -29,6 +30,7 @@ const RouterRoutes = () => {
                 <Route element={<AdminRoute />}>
                     <Route path='/admin' element={<AdminLayout />}>
                         <Route path="" element={<AdminDashboard />} />
+                        <Route path="common" element={<ManageCommon />} />
                         <Route path="product" element={<ManageProducts />} />
                         <Route path="orders" element={<ManageOrder />} />
                     </Route>

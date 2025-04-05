@@ -17,7 +17,7 @@ const ManageOrder = () => {
     useDocTitle("Admin Orders");
 
     const { getAllOrder, updateStatus } = useContext(OrderContext)
-    const { getProvince, getDistrict } = useContext(AddressContext)
+    const { getProvince } = useContext(AddressContext)
     const { userId } = useContext(UserContext)
 
     const [allOrder, setAllOrder] = useState([])

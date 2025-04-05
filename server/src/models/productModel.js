@@ -9,6 +9,7 @@ const productSchema = new Schema({
     brand: {
         type: String
     },
+    brandId: {type: mongoose.Schema.Types.ObjectId, ref: "Brand"}, 
     title: {
         type: String
     },

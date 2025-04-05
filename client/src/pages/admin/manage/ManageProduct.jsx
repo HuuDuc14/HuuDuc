@@ -128,6 +128,7 @@ const ManageProducts = () => {
             render: (product) => (
                 <>
                     <InputQuantityProduct
+                        key={product._id}
                         product={product}
                         handleUpdateQuantityProduct={handleUpdateQuantityProduct} // Truyền hàm cập nhật số lượng vào component con
                     />
@@ -149,6 +150,7 @@ const ManageProducts = () => {
             render: (product) => (
                 <>
                     <InputPriceProduct
+                        key={product._id}
                         product={product}
                         handleUpdatePriceProduct={handleUpdatePriceProduct}
                     />
@@ -160,7 +162,7 @@ const ManageProducts = () => {
             title: "Hành động",
             key: 'action',
             render: (text, product) => (
-                <button className="bt bt_danger" onClick={() => handleDelete(product._id)}>Xóa</button>
+                <button key={product._id} className="bt bt_danger" onClick={() => handleDelete(product._id)}>Xóa</button>
             ),
             fixed: 'right',
             width: '70px'
@@ -180,6 +182,7 @@ const ManageProducts = () => {
                 </div>
                 <div className="table-wrapper">
                     <Table
+                        rowKey="_id"
                         columns={columns}
                         dataSource={allProduct}
                         onChange={onChange}

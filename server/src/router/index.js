@@ -4,6 +4,7 @@ import authRouter from './authRoute.js'
 import orderRouter from './orderRoute.js'
 import addressRouter from './addressRoute.js'
 import reviewRouter from './reviewRoute.js'
+import brandRouter from './brandRoute.js'
 
 const routers = (app) => {
 
@@ -13,6 +14,7 @@ const routers = (app) => {
     app.use('/order', orderRouter)
     app.use('/address', addressRouter)
     app.use('/review', reviewRouter)
+    app.use('/brand', brandRouter)
 
     app.use('/', (req, res) => {
         res.send('home')
