@@ -1,6 +1,6 @@
 import Brand from "../models/brandModel.js"
 
-
+ 
 const getListBrand = async (req, res) => {
     try {
         const brands = await Brand.find()
@@ -30,7 +30,22 @@ const createBrand = async (req, res) => {
     }
 }
 
+const deleteBrand = async (req, res) => {
+    const { brandId } = req.params
+
+    try {
+        const brand = await Brand.findByIdAndDelete(brandId)
+        res.status(200).json({
+            message: `Đã xóa ${brand.name}`,
+            brand
+        })
+    } catch (error) {
+        res.status(500).json({ message: 'Lỗi khi xóa thương hiệu'});
+    }
+}
+
 export {
     getListBrand,
-    createBrand
+    createBrand,
+    deleteBrand
 }

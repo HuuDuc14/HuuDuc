@@ -12,7 +12,8 @@ const initialState = {
     isFormCreate: false,
     isFormOrder: false,
     isProductReview: false,
-    isLightMode: false
+    isLightMode: false,
+    isChatBoxOpen: false,
 };
 
 // Common-Provider Component
@@ -71,6 +72,13 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const toggleChatBox = (toggle) => {
+        return dispatch({
+            type: 'TOGGLE_CHAT_BOX',
+            payload: { toggle }
+        })
+    }
+
     // Context values
     const values = {
         ...state,
@@ -80,7 +88,8 @@ const CommonProvider = ({ children }) => {
         toggleFormCreate,
         toggleFormOrder,
         toggleProductReview,
-        toggleLightMode
+        toggleLightMode,
+        toggleChatBox
     };
 
     return (

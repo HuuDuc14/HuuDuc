@@ -220,7 +220,7 @@ const ManageOrder = () => {
             onFilter: (value, record) => record.status.indexOf(value) === 0
         },
         {
-            title: "Hành động",
+            title: "",
             key: "action",
             render: (text, order) => (
                 <>

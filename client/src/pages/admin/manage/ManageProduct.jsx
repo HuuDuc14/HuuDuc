@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { Table } from 'antd';
 
 import { InputPriceProduct, InputQuantityProduct } from "../../../components/common/Common";
+import { BrandContext } from "../../../contexts/common/brandContext";
 
 
 const ManageProducts = () => {
@@ -16,6 +17,7 @@ const ManageProducts = () => {
 
     const api_url = 'http://localhost:5000'
     const { products, deleteProduct, updateQuantityProduct, updatePriceProduct } = useContext(ProductContext)
+    const { brands } = useContext(BrandContext)
     const { toggleFormCreate } = useContext(commonContext);
     const [allProduct, setAllProducts] = useState([])
     const [currentPage, setCurrentPage] = useState(10)
@@ -31,6 +33,7 @@ const ManageProducts = () => {
         }
         getProducts()
     }, [products])
+    
 
     if (allProduct == null) {
         return (
@@ -93,13 +96,18 @@ const ManageProducts = () => {
         },
         {
             title: "Hãng",
-            dataIndex: 'brand',
+            // dataIndex: 'brandId',
             key: 'brand',
-            filters: [
-                { text: 'JBL', value: 'JBL' },
-                { text: 'boAt', value: 'boAt' },
-            ],
-            onFilter: (value, record) => record.brand.indexOf(value) === 0
+            filters: brands.map(brand => ({
+                text: brand.name,
+                value: brand._id,
+            })),
+            onFilter: (value, product) => product.brandId?._id === value,
+            render: (product) => (
+                <>
+                    <p>{product.brandId?.name}</p>
+                </>
+            )
         },
         {
             title: "Tên",
@@ -159,7 +167,7 @@ const ManageProducts = () => {
             align: 'center'
         },
         {
-            title: "Hành động",
+            title: "",
             key: 'action',
             render: (text, product) => (
                 <button key={product._id} className="bt bt_danger" onClick={() => handleDelete(product._id)}>Xóa</button>

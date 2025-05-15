@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import filtersContext from '../../contexts/filters/filtersContext';
 import { sortMenu } from '../../data/filterBarData';
 import { displayMoney } from '../../helpers/utils';
+import { BrandContext } from '../../contexts/common/brandContext';
 
 
 const FilterBarOptions = () => {
@@ -82,7 +83,7 @@ const FilterBarOptions = () => {
                         type="button"
                         className="close_btn"
                         onClick={() => handleMobFilterVisibility(false)}
-                    >
+                    >                      
                         &times;
                     </button>
                 </div>

@@ -2,6 +2,8 @@ import { createContext, useEffect, useReducer, useContext } from 'react';
 import { brandsMenu, categoryMenu } from '../../data/filterBarData';
 import filtersReducer from './filtersReducer';
 import { ProductContext } from '../product/productContext';
+import { BrandContext } from '../common/brandContext';
+import { CategoryContext } from '../common/categoryContext';
 
 // Filters-Context
 const filtersContext = createContext();
@@ -10,8 +12,8 @@ const filtersContext = createContext();
 const initialState = {
     allProducts: [],
     sortedValue: null,
-    updatedBrandsMenu: brandsMenu,
-    updatedCategoryMenu: categoryMenu,
+    updatedBrandsMenu: [],
+    updatedCategoryMenu: [],
     selectedPrice: {
         price: 0,
         minPrice: 0,
@@ -25,10 +27,43 @@ const initialState = {
 
 // Filters-Provider Component
 const FiltersProvider = ({ children }) => {
+    
     const [state, dispatch] = useReducer(filtersReducer, initialState);
 
     // Lấy products từ ProductContext
     const { products } = useContext(ProductContext);
+    const { brands } = useContext(BrandContext)
+    const { categories } = useContext(CategoryContext)
+
+    useEffect(() => {
+        if (brands.length) {
+            const formattedBrands = brands.map(brand => ({
+                id: brand._id,
+                label: brand.name,
+                checked: false
+            }))
+
+            dispatch({
+                type: 'LOAD_BRANDS_MENU',
+                payload: { brands: formattedBrands }
+            });
+        }
+    }, [brands])
+
+    useEffect(() => {
+        if (categories.length) {
+            const formattedCategories = categories.map(category => ({
+                id: category._id,
+                label: category.name,
+                checked: false
+            }))
+
+            dispatch({
+                type: 'LOAD_CATEGORYES_MENU',
+                payload: { categories: formattedCategories }
+            });
+        }
+    }, [categories])
 
     useEffect(() => {
         if (products.length) {
@@ -67,24 +102,25 @@ const FiltersProvider = ({ children }) => {
         /*==== Filtering ====*/
 
         // filter by Brands
+        
         const checkedBrandItems = state.updatedBrandsMenu
             .filter(item => item.checked)
-            .map(item => item.label.toLowerCase());
+            .map(item => item.id);
 
         if (checkedBrandItems.length) {
             updatedProducts = updatedProducts.filter(item =>
-                checkedBrandItems.includes(item.brand.toLowerCase())
+                checkedBrandItems.includes(item.brandId._id)
             );
         }
 
         // filter by Category
         const checkedCategoryItems = state.updatedCategoryMenu
             .filter(item => item.checked)
-            .map(item => item.label.toLowerCase());
+            .map(item => item.id);
 
         if (checkedCategoryItems.length) {
             updatedProducts = updatedProducts.filter(item =>
-                checkedCategoryItems.includes(item.category.toLowerCase())
+                checkedCategoryItems.includes(item.category._id)
             );
         }
 
@@ -114,6 +150,7 @@ const FiltersProvider = ({ children }) => {
     };
 
     const handleBrandsMenu = (id) => {
+
         dispatch({
             type: 'CHECK_BRANDS_MENU',
             payload: { id }

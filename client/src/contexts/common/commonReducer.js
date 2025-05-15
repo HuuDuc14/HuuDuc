@@ -46,6 +46,11 @@ const commonReducer = (state, action) => {
                 isLightMode: action.payload.toggle
             }
 
+        case 'TOGGLE_CHAT_BOX':
+            return {
+                ...state,
+                isChatBoxOpen: action.payload.toggle
+            }
 
         default:
             return state;

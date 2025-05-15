@@ -10,6 +10,8 @@ import { OrderProvider } from './contexts/order/orderContext';
 import { AddressProvider } from './contexts/address/addressContext';
 import { ProductReviewProvider } from './contexts/review/productReview';
 import { BrandProvider } from './contexts/common/brandContext';
+import ChatBox from './components/chatbox/ChatBox';
+import { CategoryProvider } from './contexts/common/categoryContext';
 
 const App = () => {
 
@@ -20,16 +22,19 @@ const App = () => {
           <CartProvider>
             <AddressProvider>
               <BrandProvider>
-                <OrderProvider>
-                  <ProductReviewProvider>
-                    <FiltersProvider>
-                      <Header />
-                      <RouterRoutes />
-                      <Footer />
-                      <BackTop />
-                    </FiltersProvider>
-                  </ProductReviewProvider>
-                </OrderProvider>
+                <CategoryProvider>
+                  <OrderProvider>
+                    <ProductReviewProvider>
+                      <FiltersProvider>
+                        <Header />
+                        <RouterRoutes />
+                        <Footer />
+                        <BackTop />
+                        <ChatBox />
+                      </FiltersProvider>
+                    </ProductReviewProvider>
+                  </OrderProvider>
+                </CategoryProvider>
               </BrandProvider>
             </AddressProvider>
           </CartProvider>

@@ -4,11 +4,13 @@ import useOutsideClose from "../../hooks/useOutsideClose";
 import { ProductContext } from "../../contexts/product/productContext";
 import { Toast } from "../alert/toast";
 import { BrandContext } from "../../contexts/common/brandContext";
+import { CategoryContext } from "../../contexts/common/categoryContext";
 
 const FormProduct = () => {
     const { isFormCreate, toggleFormCreate } = useContext(commonContext);
     const { addProduct } = useContext(ProductContext)
     const { brands } = useContext(BrandContext);
+    const { categories } = useContext(CategoryContext)
     
 
     const [brand, setBrand] = useState("");
@@ -108,13 +110,7 @@ const FormProduct = () => {
 
                                 <div className="row">
                                     <div className="col-4">
-                                        <div className="input_box">
-                                            {/* <input
-                                                type="text"
-                                                className="input_field"
-                                                value={brand}
-                                                onChange={(e) => setBrand(e.target.value)}
-                                            /> */}
+                                        <div className="input_box">                                      
                                              <select
                                                 className="input_field"
                                                 value={brand}
@@ -123,7 +119,7 @@ const FormProduct = () => {
                                                 <option>-- Chọn thương hiệu --</option>
                                                 {
                                                     brands && brands.map((brand) => (
-                                                        <option value={brand.name}>{brand.name}</option>
+                                                        <option value={brand._id}>{brand.name}</option>
                                                     ))
                                                 }
                                             </select>
@@ -153,9 +149,11 @@ const FormProduct = () => {
                                                 onChange={(e) => setCategory(e.target.value)}
                                             >
                                                 <option>-- Chọn danh mục --</option>
-                                                <option value="Headphones">Headphones</option>
-                                                <option value="Earphones">Earphones</option>
-                                                <option value="Neckbands">Neckbands</option>
+                                                {
+                                                    categories.map((category) => (
+                                                        <option value={category._id}>{category.name}</option>
+                                                    ))
+                                                }
                                             </select>
                                             <label className="input_label">Danh mục</label>
                                         </div>

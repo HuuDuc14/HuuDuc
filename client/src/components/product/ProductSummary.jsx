@@ -7,11 +7,12 @@ import { useParams } from 'react-router-dom';
 
 const ProductSummary = (props) => {
 
-    const { brand, title, info, category, type, connectivity } = props;
+    const { brandId, title, info, type, connectivity } = props;
+    
 
     const { active, handleActive, activeClass } = useActive('specs');
 
-    const { productReviews, fetchProductReview } = useContext(ProductReviewContext)
+    const { fetchProductReview } = useContext(ProductReviewContext)
     const [reviews, setReviews] = useState([]);
     const { productId } = useParams();
 
@@ -40,7 +41,7 @@ const ProductSummary = (props) => {
                                 className={`tabs_item ${activeClass('specs')}`}
                                 onClick={() => handleActive('specs')}
                             >
-                                Thông số kỹ thuật
+                                Thông số kỹ thuật 
                             </li>
                             <li
                                 className={`tabs_item ${activeClass('overview')}`}
@@ -65,7 +66,7 @@ const ProductSummary = (props) => {
                                     <ul>
                                         <li>
                                             <span>Thương hiệu</span>
-                                            <span>{brand}</span>
+                                            <span>{brandId.name}</span>
                                         </li>
                                         <li>
                                             <span>Mẫu mã</span>
@@ -74,11 +75,7 @@ const ProductSummary = (props) => {
                                         <li>
                                             <span>Loại tai nghe</span>
                                             <span>{type}</span>
-                                        </li>
-                                        <li>
-                                            <span>Kết nối</span>
-                                            <span>{connectivity}</span>
-                                        </li>
+                                        </li>                                      
                                         <li>
                                             <span>Microphone</span>
                                             <span>Yes</span>

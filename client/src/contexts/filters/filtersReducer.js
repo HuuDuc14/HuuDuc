@@ -1,5 +1,17 @@
 const filtersReducer = (state, action) => {
     switch (action.type) {
+        // gắn brandmenu = brands
+        case 'LOAD_BRANDS_MENU':
+            return {
+                ...state,
+                updatedBrandsMenu: action.payload.brands
+            };
+
+        case 'LOAD_CATEGORYES_MENU':
+            return {
+                ...state,
+                updatedCategoryMenu: action.payload.categories
+            };
 
         case 'LOAD_ALL_PRODUCTS':
 
@@ -25,6 +37,7 @@ const filtersReducer = (state, action) => {
 
 
         case 'CHECK_BRANDS_MENU':
+            
             return {
                 ...state,
                 updatedBrandsMenu: state.updatedBrandsMenu.map(item => {

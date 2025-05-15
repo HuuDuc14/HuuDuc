@@ -86,6 +86,8 @@ const DetailProduct = () => {
         );
     }
 
+    console.log(product);
+    
 
 
     return (
