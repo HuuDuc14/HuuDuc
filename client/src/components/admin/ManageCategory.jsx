@@ -25,6 +25,12 @@ const ManageCategory = () => {
             align: "center"
         },
         {
+            title: "Số lượng sản phẩm",
+            dataIndex: "productCount",
+            key: "name",
+            align: "center"
+        },
+        {
             title: "",
             key: "action",
             align: "center",
@@ -47,7 +53,6 @@ const ManageCategory = () => {
 
     return (
         <>
-
             <Modal
                 title="Thêm danh mục"
                 open={isModalCreateCategory}

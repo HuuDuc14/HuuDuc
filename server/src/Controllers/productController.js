@@ -76,7 +76,10 @@ const createProduct = async (req, res) => {
             images: imagePaths, // Lưu đường dẫn ảnh vào database
         });
 
-        const product = await newProduct.populate('brandId');
+        const product = await newProduct.populate([
+            { path: 'brandId' },
+            { path: 'category' }
+        ]);
         res.status(200).json({ message: 'Thêm sản phẩm thành công', product: product });
     } catch (error) {
         console.error('Error:', error);

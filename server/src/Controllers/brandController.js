@@ -1,12 +1,33 @@
 import Brand from "../models/brandModel.js"
+import Product from "../models/productModel.js"
 
  
 const getListBrand = async (req, res) => {
     try {
         const brands = await Brand.find()
 
+        const groupProductCount = await Product.aggregate([
+            {
+                $group: {
+                    _id: "$brandId",
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        const countMap = {}
+        groupProductCount.forEach(item => {
+            countMap[item._id.toString()] = item.count
+        })
+
+        const brandsWithCount = brands.map(bra => ({
+            _id: bra._id,
+            name: bra.name,
+            productCount: countMap[bra._id.toString()] || 0
+        }))
+
         res.status(200).json(
-            brands
+            {brands: brandsWithCount}
         )
     } catch (error) {
         res.status(500).json({

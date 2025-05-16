@@ -13,7 +13,7 @@ export const BrandProvider = ({ children }) => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${api_url}/brand`)
-                setBrands(response.data)
+                setBrands(response.data.brands)
             } catch (error) {
                 if (error.response && error.response.status == 500) {
                     Toast.fire({

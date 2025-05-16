@@ -1,4 +1,5 @@
 import Category from "../models/categoryModel.js"
+import Product from "../models/productModel.js"
 
 
 const createCategory = async (req, res) => {
@@ -18,7 +19,28 @@ const createCategory = async (req, res) => {
 const getListCategory = async (req, res) => {
     try {
         const categories = await Category.find()
-        res.status(200).json({categories})
+
+        const productCounts = await Product.aggregate([
+            {
+                $group: {
+                    _id: "$category", // group theo category
+                    count: { $sum: 1 } // đếm số lượng
+                }
+            } 
+        ]);
+
+        const countMap = {};
+        productCounts.forEach(item => {
+            countMap[item._id.toString()] = item.count;
+        });
+
+        const categoriesWithCount = categories.map(cat => ({
+            _id: cat._id,
+            name: cat.name, // hoặc các field khác
+            productCount: countMap[cat._id.toString()] || 0
+        }));
+        
+        res.status(200).json({categories: categoriesWithCount})
     } catch (error) {
         res.status(500).json({
             message: "Lỗi khi lấy danh mục"

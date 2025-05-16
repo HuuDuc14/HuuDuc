@@ -6,10 +6,13 @@ import commonContext from "../../../contexts/common/commonContext";
 import FormProduct from "../../../components/form/FormProduct";
 import { Toast } from "../../../components/alert/toast";
 import Swal from "sweetalert2";
-import { Table } from 'antd';
+import { Button, Input, Table } from 'antd';
 
 import { InputPriceProduct, InputQuantityProduct } from "../../../components/common/Common";
 import { BrandContext } from "../../../contexts/common/brandContext";
+import { CategoryContext } from "../../../contexts/common/categoryContext";
+
+import { SearchOutlined } from '@ant-design/icons';
 
 
 const ManageProducts = () => {
@@ -18,9 +21,10 @@ const ManageProducts = () => {
     const api_url = 'http://localhost:5000'
     const { products, deleteProduct, updateQuantityProduct, updatePriceProduct } = useContext(ProductContext)
     const { brands } = useContext(BrandContext)
+    const { categories } = useContext(CategoryContext)
     const { toggleFormCreate } = useContext(commonContext);
     const [allProduct, setAllProducts] = useState([])
-    const [currentPage, setCurrentPage] = useState(10)
+    const [currentPage, setCurrentPage] = useState(5)
 
     useEffect(() => {
         const getProducts = async () => {
@@ -33,7 +37,7 @@ const ManageProducts = () => {
         }
         getProducts()
     }, [products])
-    
+
 
     if (allProduct == null) {
         return (
@@ -95,8 +99,22 @@ const ManageProducts = () => {
             }
         },
         {
+            title: "Danh mục",
+            key: 'category',
+            filters: categories?.map(category => ({
+                text: category.name,
+                value: category._id
+            })),
+            render: (product) => (
+                <>
+                    {product.category?.name}
+                </>
+            ),
+            onFilter: (value, record) => record.category?._id === value,
+            filterSearch: true
+        },
+        {
             title: "Hãng",
-            // dataIndex: 'brandId',
             key: 'brand',
             filters: brands.map(brand => ({
                 text: brand.name,
@@ -107,28 +125,51 @@ const ManageProducts = () => {
                 <>
                     <p>{product.brandId?.name}</p>
                 </>
-            )
+            ),
+            filterSearch: true
         },
         {
             title: "Tên",
             dataIndex: 'title',
             key: 'title',
-            ellipsis: true,
-            sorter: {
-                compare: (a, b) => a.title.localeCompare(b.title),
-                multiple: 1,
+            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+                <div style={{ padding: 8 }}>
+                    <Input
+                        value={selectedKeys[0]}
+                        onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                        onPressEnter={() => confirm()}
+                        placeholder="Tìm tên sản phẩm"
+                        style={{ marginBottom: 8, display: 'block' }}
+                    />
+
+                    <Button
+                        type="primary"
+                        onClick={() => confirm()}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ marginRight: "10px" }}
+                    >
+                        Tìm
+                    </Button>
+                    <Button
+                        onClick={() => clearFilters()}
+                        size="small"
+
+                    >
+                        Reset
+                    </Button>
+                </div>
+            ),
+            filterIcon: filtered => (
+                <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+            ),
+            onFilter: (value, product) => {
+                
+                return (
+                    product.title.toLowerCase().includes(value.toLowerCase())
+                );
             },
-        },
-        {
-            title: "Loại",
-            dataIndex: 'type',
-            key: 'type',
-            filters: [
-                { text: 'On Ear', value: 'On Ear' },
-                { text: 'In Ear', value: 'In Ear' },
-                { text: 'Over Ear', value: 'Over Ear' },
-            ],
-            onFilter: (value, record) => record.type.indexOf(value) === 0
+            filterSearch: true
         },
         {
             title: "Số lượng",
@@ -183,7 +224,7 @@ const ManageProducts = () => {
 
     return (
         <>
-            <div className="container">
+            <div className="container-fluid">
                 <SectionsHead heading="Quản lý sản phẩm" />
                 <div>
                     <button className="btn" onClick={() => toggleFormCreate(true)}>Thêm sản phẩm</button>
@@ -197,7 +238,7 @@ const ManageProducts = () => {
                         pagination={{
                             pageSize: currentPage,
                             showSizeChanger: true,
-                            pageSizeOptions: [10, 20, 50],
+                            pageSizeOptions: [5, 10, 20],
                         }}
                         scroll={{
                             x: 'max-content', // Tự động cuộn ngang nếu cần thiết

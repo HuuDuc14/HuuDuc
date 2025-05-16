@@ -48,6 +48,16 @@ const ManageBrand = () => {
             align: "center",
         },
         {
+            title: "Số lượng sản phẩm",
+            key: "productCount",
+            align: "center",
+            render: (brand) => (
+                <>
+                    {brand?.productCount}
+                </>
+            ),
+        },
+        {
             title: "",
             key: "action",
             align: "center",

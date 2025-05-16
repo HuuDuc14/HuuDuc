@@ -16,7 +16,7 @@ export const CategoryProvider = ({ children }) => {
                 const response = await axios.get(`${api_url}/category`)
                 setCategories(response.data.categories)
             } catch (error) {
-                if (error.response && error.response.status == 500) {
+                if (error.response && error.response.status === 500) {
                     Toast.fire({
                         icon: "error",
                         title: `${error.response.data.message}`
@@ -38,7 +38,7 @@ export const CategoryProvider = ({ children }) => {
             setCategories(prevCategories => [...prevCategories, newCategory])
             message.success(`Đã thêm danh mục ${newCategory.name}`)
         } catch (error) {
-            if (error.response && error.response.status == 500) {
+            if (error.response && error.response.status === 500) {
                 Toast.fire({
                     icon: "error",
                     title: `${error.response.data.message}`
@@ -60,7 +60,7 @@ export const CategoryProvider = ({ children }) => {
 
             message.success(`${response.data.message}`)
         } catch (error) {
-            if (error.response && error.response.status == 500) {
+            if (error.response && error.response.status === 500) {
                 message.error(error.response.data.message)
             } else {
                 console.error("Xóa danh mục thành công!", error);
