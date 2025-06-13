@@ -82,7 +82,7 @@ const FeaturedSlider = () => {
             effect={"coverflow"}
             centeredSlides={true}
             coverflowEffect={{
-                rotate: 0,
+                rotate: 100,
                 stretch: 0,
                 depth: 70,
                 modifier: 3,
